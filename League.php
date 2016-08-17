@@ -32,11 +32,23 @@ class League
      	$this->dbpdo->closeConnection();
     }
 
-    public function deleteGameData(){
+    public function deleteGameData()
+    {
         $sql = "DELETE FROM `Game` WHERE 1 = 1";
         $stmt = $this->dbcon->prepare($sql);
         $stmt->execute();
         $this->dbpdo->closeConnection();
+    }
+
+    public function getGameData()
+    {
+        $sql = "SELECT * FROM `Game`";
+        $stmt = $this->dbcon->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        $this->dbpdo->closeConnection();
+
+        return $result;
     }
 }
 ?>
