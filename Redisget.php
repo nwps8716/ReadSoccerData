@@ -1,6 +1,6 @@
 <?php
 
-require_once "League.php";
+require_once "DB/League.php";
 
 //Connecting to Redis server on localhocast
 ignore_user_abort();
@@ -16,4 +16,3 @@ while($reload)
     $redis->set('gamedata', json_encode($data));
     sleep(60);
 }
-?>

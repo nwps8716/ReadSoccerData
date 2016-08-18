@@ -1,6 +1,6 @@
 <?php
 
-require_once "League.php";
+require_once "DB/League.php";
 
 ignore_user_abort();
 $reload = true;
@@ -10,21 +10,21 @@ while($reload)
     $url2 = 'http://www.228365365.com/app/member/FT_browse/body_var.php?uid=test00&rtype=r&langx=zh-cn&mtype=3&page_no=0&league_id=&hot_game=';
     //第一次抓cookie
     $ch=curl_init();
-    curl_setopt($ch,CURLOPT_URL,$url);
-    curl_setopt($ch,CURLOPT_HEADER,false);
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_HEADER, false);
     curl_setopt($ch, CURLOPT_COOKIEJAR, dirname(__FILE__). '/cookie.txt');
-    curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     $content = curl_exec($ch);
 
     //將cookie拿出來用
-    curl_setopt($ch,CURLOPT_URL,$url2);
-    curl_setopt($ch,CURLOPT_HEADER,false);
+    curl_setopt($ch, CURLOPT_URL, $url2);
+    curl_setopt($ch, CURLOPT_HEADER, false);
     curl_setopt($ch, CURLOPT_COOKIEFILE, dirname(__FILE__). '/cookie.txt');
-    curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
     $pagecontent = curl_exec($ch);
     curl_close($ch);
 
-    //跳過陣列$newarr[0](前面多餘的資料)
+    //跳過陣列前面多餘的資料
     $jump = substr($pagecontent,65);
     $arr = explode('parent.GameFT', $jump);
 
@@ -34,7 +34,8 @@ while($reload)
     for ($i = 1 ; $i < count($arr) ; $i++)
     {
         $newarr[$i] = explode(',', $arr[$i]);
-        for ($j = 1 ; $j <= 3 ; $j++){
+        for ($j = 1 ; $j <= 3 ; $j++)
+        {
             //將一個資料切成3個row的方式存入資料庫
             if ($j == 1) {
                 $league = $newarr[$i][2];
@@ -82,5 +83,3 @@ while($reload)
     }
     sleep(60);
 }//endwhile
-
-?>
